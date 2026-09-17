@@ -2,10 +2,10 @@
 title: "Giám sát hệ thống với Prometheus và Grafana trên Docker"
 slug: "cai-dat-monitoring-voi-prometheus-grafana"
 date: "2024-05-18"
-category: "DevOps"
+category: "IT Support"
 tags: ["Prometheus", "Grafana", "Monitoring", "Docker", "DevOps"]
 excerpt: "Hướng dẫn cài đặt và cấu hình hệ thống giám sát server với Prometheus, Grafana và Node Exporter."
-thumbnail: "/images/posts/prometheus-grafana.jpg"
+thumbnail: "/images/IT2.jpg
 published: true
 ---
 
