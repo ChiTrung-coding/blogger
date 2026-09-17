@@ -1,8 +1,9 @@
+import { useEffect, useState } from 'react';
 import { getAllPosts } from '../lib/posts.js';
+import { getAdminEventName } from '../lib/admin.js';
 
 /**
  * Hook để lấy danh sách bài viết với optional filtering.
- * Vì dữ liệu là static (build-time), không cần useState/useEffect.
  *
  * @param {Object} options - Tuỳ chọn lọc
  * @param {string} [options.category] - Lọc theo category (case-insensitive)
@@ -12,22 +13,29 @@ import { getAllPosts } from '../lib/posts.js';
  */
 export function usePosts(options = {}) {
   const { category, tag, limit } = options;
+  const [posts, setPosts] = useState(() => getAllPosts());
 
-  let posts = getAllPosts();
+  useEffect(() => {
+    const refresh = () => setPosts(getAllPosts());
+    window.addEventListener(getAdminEventName(), refresh);
+    return () => window.removeEventListener(getAdminEventName(), refresh);
+  }, []);
+
+  let result = posts;
 
   if (category) {
-    posts = posts.filter(
+    result = result.filter(
       post => post.category.toLowerCase() === category.toLowerCase()
     );
   }
 
   if (tag) {
-    posts = posts.filter(post => post.tags.includes(tag));
+    result = result.filter(post => post.tags.includes(tag));
   }
 
   if (limit) {
-    posts = posts.slice(0, limit);
+    result = result.slice(0, limit);
   }
 
-  return posts;
+  return result;
 }

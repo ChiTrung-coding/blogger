@@ -6,18 +6,33 @@ const emptyData = {
   deletedPosts: [],
 };
 
-export function getAdminData() {
+let memory = { ...emptyData };
+
+function discardLegacyAdminData() {
   try {
-    const parsed = JSON.parse(localStorage.getItem(ADMIN_KEY) || '{}');
-    return { ...emptyData, ...parsed };
+    localStorage.removeItem(ADMIN_KEY);
   } catch {
-    return { ...emptyData };
+    // localStorage may be unavailable
   }
 }
 
+discardLegacyAdminData();
+
+export function getAdminData() {
+  return {
+    posts: [...memory.posts],
+    deletedPosts: [...memory.deletedPosts],
+  };
+}
+
 export function saveAdminData(data) {
-  localStorage.setItem(ADMIN_KEY, JSON.stringify(data));
-  window.dispatchEvent(new Event(ADMIN_EVENT));
+  memory = {
+    posts: data.posts || [],
+    deletedPosts: data.deletedPosts || [],
+  };
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event(ADMIN_EVENT));
+  }
 }
 
 export function getAdminEventName() {
@@ -25,6 +40,45 @@ export function getAdminEventName() {
 }
 
 export function clearAdminData() {
-  localStorage.removeItem(ADMIN_KEY);
-  window.dispatchEvent(new Event(ADMIN_EVENT));
+  memory = { ...emptyData };
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event(ADMIN_EVENT));
+  }
+}
+
+export async function writePostFile(post) {
+  const frontmatter = {
+    title: post.title,
+    slug: post.slug,
+    date: post.date,
+    category: post.category,
+    tags: post.tags,
+    excerpt: post.excerpt,
+    thumbnail: post.thumbnail || null,
+    published: post.published,
+  };
+  const markdown = `---\n${Object.entries(frontmatter).map(([key, value]) => `${key}: ${JSON.stringify(value)}`).join('\n')}\n---\n\n${post.content}`;
+  try {
+    const response = await fetch('/__save-post', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug: post.slug, date: post.date, markdown }),
+    });
+    return response.ok;
+  } catch {
+    return false;
+  }
+}
+
+export async function deletePostFile(slug) {
+  try {
+    const response = await fetch('/__delete-post', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ slug }),
+    });
+    return response.ok;
+  } catch {
+    return false;
+  }
 }

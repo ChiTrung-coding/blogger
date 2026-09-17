@@ -2,8 +2,8 @@ import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Bold, Download, FilePlus2, Heading2, ImagePlus, Italic, LayoutDashboard, List, Pencil, Plus, Save, Trash2, X } from 'lucide-react';
 import { useConfig } from '../hooks/useConfig';
-import { getConfigOverrides, saveConfigOverrides } from '../lib/config';
-import { getAdminData, saveAdminData } from '../lib/admin';
+import { persistConfig } from '../lib/config';
+import { getAdminData, saveAdminData, writePostFile, deletePostFile } from '../lib/admin';
 import { getManageablePosts } from '../lib/posts';
 import { logoutAdmin } from '../lib/auth';
 import { resolveAssetUrl } from '../lib/assets';
@@ -153,7 +153,6 @@ export default function AdminPage() {
     education: Array.isArray(config.about?.education) ? { ...(config.about.education[0] || {}) } : { ...(config.about?.education || {}) },
   }));
   const [notice, setNotice] = useState('');
-  const overrides = getConfigOverrides();
 
   function handleLogout() {
     logoutAdmin();
@@ -166,7 +165,13 @@ export default function AdminPage() {
   const availableTags = [...new Set(posts.flatMap((post) => post.tags || []))].sort((a, b) => a.localeCompare(b));
   const stats = useMemo(() => ({ posts: posts.length, projects: projects.length, experiences: experiences.length }), [posts.length, projects.length, experiences.length]);
 
-  function notify(message) { setNotice(message); window.setTimeout(() => setNotice(''), 2600); }
+  function notify(message) { setNotice(message); window.setTimeout(() => setNotice(''), 4200); }
+
+  function persistNotice(savedToDisk, successText) {
+    notify(savedToDisk
+      ? `${successText} Đã ghi vào repo local — commit/push để mọi thiết bị cùng dữ liệu.`
+      : `${successText} GitHub Pages không lưu được lên server. Hãy xuất file rồi commit/push.`);
+  }
 
   async function persistImage(value, prefix) {
     if (!value?.startsWith('data:image/')) return value;
@@ -222,15 +227,19 @@ export default function AdminPage() {
     const index = nextPosts.findIndex((post) => post.slug === editingPost);
     if (index >= 0) nextPosts[index] = item; else nextPosts.push(item);
     const nextData = { ...adminData, posts: nextPosts, deletedPosts: (adminData.deletedPosts || []).filter((slugValue) => slugValue !== item.slug) };
-    saveAdminData(nextData); setAdminData(nextData); setPosts(getManageablePosts()); closePostForm(); notify('Đã lưu bài viết.');
+    saveAdminData(nextData); setAdminData(nextData); setPosts(getManageablePosts()); closePostForm();
+    const savedToDisk = await writePostFile(item);
+    persistNotice(savedToDisk, 'Đã lưu bài viết.');
   }
 
-  function deletePost(post) {
+  async function deletePost(post) {
     if (!window.confirm(`Xóa bài viết “${post.title}”?`)) return;
     const custom = adminData.posts.filter((item) => item.slug !== post.slug);
     const deleted = adminData.posts.some((item) => item.slug === post.slug) ? adminData.deletedPosts : [...adminData.deletedPosts, post.slug];
     const nextData = { ...adminData, posts: custom, deletedPosts: deleted };
-    saveAdminData(nextData); setAdminData(nextData); setPosts(getManageablePosts()); notify('Đã xóa bài viết.');
+    saveAdminData(nextData); setAdminData(nextData); setPosts(getManageablePosts());
+    const savedToDisk = await deletePostFile(post.slug);
+    persistNotice(savedToDisk, 'Đã xóa bài viết.');
   }
 
   function downloadPost(post) {
@@ -240,14 +249,16 @@ export default function AdminPage() {
     const link = document.createElement('a'); link.href = url; link.download = `${post.date}-${post.slug}.md`; link.click(); URL.revokeObjectURL(url);
   }
 
-  function saveCollection(collection, form, editing, setEditing, empty) {
+  async function saveCollection(collection, form, editing, setEditing, empty) {
     const list = [...(config[collection] || [])];
     const index = editing === null ? -1 : Number(editing);
-    const options = { ...overrides, [collection]: list };
     if (index >= 0) list[index] = form; else list.push(form);
-    const nextOverrides = { ...overrides, [collection]: list };
-    saveConfigOverrides(nextOverrides); setEditing(null); notify(`Đã lưu ${collection === 'projects' ? 'dự án' : 'kinh nghiệm'}.`);
-    if (empty === emptyProject) setProjectForm(emptyProject); else setExperienceForm(emptyExperience);
+    const { savedToDisk } = await persistConfig({ [collection]: list });
+    setEditing(null);
+    persistNotice(savedToDisk, `Đã lưu ${collection === 'projects' ? 'dự án' : collection === 'categories' ? 'danh mục' : 'kinh nghiệm'}.`);
+    if (empty === emptyProject) setProjectForm(emptyProject);
+    else if (empty === emptyExperience) setExperienceForm(emptyExperience);
+    else setCategoryForm(emptyCategory);
   }
   async function saveProject() {
     const image = await persistImage(projectForm.image, `project-${slugify(projectForm.name || 'image')}`);
@@ -263,15 +274,18 @@ export default function AdminPage() {
     const targetIndex = Math.min(project.sortOrder - 1, remaining.length);
     remaining.splice(targetIndex, 0, project);
     const orderedProjects = remaining.map((item, index) => ({ ...item, sortOrder: index + 1 }));
-    saveConfigOverrides({ ...overrides, projects: orderedProjects });
+    const { savedToDisk } = await persistConfig({ projects: orderedProjects });
     setEditingProject(null);
     setProjectForm({ ...emptyProject, technologies: [] });
-    notify('Đã lưu dự án và cập nhật thứ tự.');
+    persistNotice(savedToDisk, 'Đã lưu dự án và cập nhật thứ tự.');
   }
 
-  function removeCollection(collection, index) {
+  async function removeCollection(collection, index) {
     if (!window.confirm('Xóa mục này?')) return;
-    const list = [...(config[collection] || [])]; list.splice(index, 1); saveConfigOverrides({ ...overrides, [collection]: list }); notify('Đã xóa mục.');
+    const list = [...(config[collection] || [])];
+    list.splice(index, 1);
+    const { savedToDisk } = await persistConfig({ [collection]: list });
+    persistNotice(savedToDisk, 'Đã xóa mục.');
   }
 
   async function saveProfile(event) {
@@ -282,8 +296,23 @@ export default function AdminPage() {
     const avatar = await persistImage(profileForm.avatar, 'avatar');
     const owner = { ...config.owner, ...profileForm, avatar };
     const skills = { ...config.skills, technical, soft: skillsForm.soft.split(/[,\n]/).map((item) => item.trim()).filter(Boolean) };
-    const about = { ...config.about, ...aboutForm, goals: aboutForm.goals.split(/\n/).map((item) => item.trim()).filter(Boolean), tools: Object.fromEntries(Object.entries(aboutForm.tools || {}).map(([group, items]) => [group, items.split(/[,\n]/).map((item) => item.trim()).filter(Boolean)])) };
-    saveConfigOverrides({ ...overrides, owner, skills, about }); notify('Lưu tất cả thành công.');
+    const about = {
+      ...config.about,
+      birthDate: aboutForm.birthDate,
+      focus: aboutForm.focus,
+      direction: aboutForm.direction,
+      quote: aboutForm.quote,
+      goals: aboutForm.goals.split(/\n/).map((item) => item.trim()).filter(Boolean),
+      tools: Object.fromEntries(Object.entries(aboutForm.tools || {}).map(([group, items]) => [group, items.split(/[,\n]/).map((item) => item.trim()).filter(Boolean)])),
+      education: [{
+        organization: (aboutForm.education.organization || '').trim(),
+        role: (aboutForm.education.role || '').trim(),
+        period: (aboutForm.education.period || '').trim(),
+        description: (aboutForm.education.description || '').trim(),
+      }],
+    };
+    const { savedToDisk } = await persistConfig({ owner, skills, about });
+    persistNotice(savedToDisk, 'Lưu tất cả thành công.');
   }
 
   function updateTechnicalSkill(index, field, value) {
@@ -313,17 +342,25 @@ export default function AdminPage() {
     });
   }
 
-  function saveAboutContent() {
+  async function saveAboutContent() {
     const about = {
       ...config.about,
-      ...aboutForm,
+      birthDate: aboutForm.birthDate,
+      focus: aboutForm.focus,
+      direction: aboutForm.direction,
+      quote: aboutForm.quote,
       goals: aboutForm.goals.split(/\n/).map((item) => item.trim()).filter(Boolean),
       tools: Object.fromEntries(Object.entries(aboutForm.tools || {}).map(([group, items]) => [group, items.split(/[,\n]/).map((item) => item.trim()).filter(Boolean)])),
-      education: { ...aboutForm.education, organization: aboutForm.education.organization.trim(), role: aboutForm.education.role.trim(), period: aboutForm.education.period.trim(), description: aboutForm.education.description.trim() },
+      education: [{
+        organization: aboutForm.education.organization.trim(),
+        role: aboutForm.education.role.trim(),
+        period: aboutForm.education.period.trim(),
+        description: aboutForm.education.description.trim(),
+      }],
     };
-    saveConfigOverrides({ ...overrides, about });
-    setAboutForm((current) => ({ ...current, education: about.education }));
-    notify('Đã lưu nội dung trang Giới thiệu.');
+    const { savedToDisk } = await persistConfig({ about });
+    setAboutForm((current) => ({ ...current, education: about.education[0] }));
+    persistNotice(savedToDisk, 'Đã lưu nội dung trang Giới thiệu.');
   }
 
   function exportConfig() {
@@ -334,7 +371,7 @@ export default function AdminPage() {
   return <>
     <Helmet><title>{`Admin | ${config.site.name}`}</title><meta name="description" content="Quản lý nội dung blog." /></Helmet>
     <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <header className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">Admin panel</p><h1 className="mt-2 text-3xl font-bold text-slate-900 dark:text-slate-100">Quản lý blog</h1><p className="mt-2 text-sm text-slate-600 dark:text-slate-400">Dữ liệu quản lý được lưu trên trình duyệt này.</p></div><div className="flex gap-2"><ActionButton onClick={exportConfig}><Download size={16} /> Xuất config</ActionButton><button type="button" onClick={handleLogout} className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800">Đăng xuất</button></div></header>
+      <header className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">Admin panel</p><h1 className="mt-2 text-3xl font-bold text-slate-900 dark:text-slate-100">Quản lý blog</h1><p className="mt-2 max-w-2xl text-sm text-slate-600 dark:text-slate-400">Website đọc dữ liệu từ <code>posts/_config.json</code>. GitHub Pages không đồng bộ Admin giữa máy tính và điện thoại — cần commit/push file config.</p></div><div className="flex gap-2"><ActionButton onClick={exportConfig}><Download size={16} /> Xuất config</ActionButton><button type="button" onClick={handleLogout} className="rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800">Đăng xuất</button></div></header>
       {notice && <p role="status" aria-live="polite" className="fixed bottom-5 right-5 z-[60] rounded-xl border border-emerald-200 bg-emerald-600 px-4 py-3 text-sm font-medium text-white shadow-xl shadow-emerald-900/20">{notice}</p>}
       <div className="grid gap-8 lg:grid-cols-[220px_1fr]">
         <nav className="h-fit rounded-2xl border border-slate-200 bg-white p-2 shadow-sm dark:border-slate-700 dark:bg-slate-800 lg:sticky lg:top-24">{tabs.map(([key, label, Icon]) => <button key={key} type="button" onClick={() => setTab(key)} className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium ${tab === key ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700'}`}><Icon size={17} />{label}</button>)}</nav>

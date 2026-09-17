@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Download, GripVertical, RotateCcw, Save } from 'lucide-react';
 import { useConfig } from '../hooks/useConfig';
-import { clearConfigOverrides, getConfigOverrides, saveConfigOverrides } from '../lib/config';
+import { persistConfig, clearConfigOverrides, getConfig } from '../lib/config';
 import Toast from '../components/ui/Toast';
 
 const sectionLabels = {
@@ -12,20 +12,19 @@ const sectionLabels = {
 };
 
 function createDraft(config) {
-  const overrides = getConfigOverrides();
   return {
     site: {
-      description: overrides.site?.description ?? config.site.description,
+      description: config.site.description,
     },
     owner: {
-      name: overrides.owner?.name ?? config.owner.name,
-      title: overrides.owner?.title ?? config.owner.title,
-      motto: overrides.owner?.motto ?? config.owner.motto,
-      location: overrides.owner?.location ?? config.owner.location,
-      education: overrides.owner?.education ?? config.owner.education,
-      bio: overrides.owner?.bio ?? config.owner.bio,
+      name: config.owner.name,
+      title: config.owner.title,
+      motto: config.owner.motto,
+      location: config.owner.location,
+      education: config.owner.education,
+      bio: config.owner.bio,
     },
-    homeLayout: overrides.homeLayout ?? ['latestPosts', 'skills', 'projects'],
+    homeLayout: config.homeLayout ?? ['latestPosts', 'skills', 'projects'],
   };
 }
 
@@ -49,21 +48,26 @@ export default function EditorPage() {
   const [draft, setDraft] = useState(() => createDraft(config));
   const [dragged, setDragged] = useState(null);
   const [saved, setSaved] = useState(false);
+  const [saveMessage, setSaveMessage] = useState('');
 
   function updateOwner(field, value) {
     setDraft((current) => ({ ...current, owner: { ...current.owner, [field]: value } }));
     setSaved(false);
   }
 
-  function save() {
-    saveConfigOverrides(draft);
+  async function save() {
+    const { savedToDisk } = await persistConfig(draft);
     setSaved(true);
+    setSaveMessage(savedToDisk
+      ? 'Đã ghi vào posts/_config.json. Commit và push để mọi thiết bị cùng dữ liệu.'
+      : 'Đã cập nhật tạm trên máy này. Website tĩnh không đồng bộ giữa thiết bị — hãy xuất config rồi commit/push.');
   }
 
-  function reset() {
-    clearConfigOverrides();
-    setDraft(createDraft(config));
+  async function reset() {
+    await clearConfigOverrides();
+    setDraft(createDraft(getConfig()));
     setSaved(false);
+    setSaveMessage('');
   }
 
   function downloadConfig() {
@@ -107,7 +111,7 @@ export default function EditorPage() {
           <div>
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-blue-600 dark:text-blue-400">Visual editor</p>
             <h1 className="mt-2 text-3xl font-bold text-slate-900 dark:text-slate-100">Chỉnh sửa blog</h1>
-            <p className="mt-2 max-w-2xl text-sm text-slate-600 dark:text-slate-400">Thay đổi được lưu trên trình duyệt này và cập nhật ngay trên giao diện.</p>
+            <p className="mt-2 max-w-2xl text-sm text-slate-600 dark:text-slate-400">Nguồn dữ liệu chính là <code>posts/_config.json</code>. GitHub Pages không lưu được thay đổi Admin giữa các thiết bị.</p>
           </div>
           <div className="flex flex-wrap gap-2">
             <button type="button" onClick={downloadConfig} className="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800"><Download size={16} /> Xuất config</button>
@@ -148,14 +152,14 @@ export default function EditorPage() {
             <h2 className="font-semibold text-slate-900 dark:text-slate-100">Cách lưu thay đổi</h2>
             <ol className="mt-3 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
               <li>Sửa nội dung hoặc kéo thả bố cục.</li>
-              <li>Nhấn “Lưu thay đổi” để xem kết quả ngay.</li>
-              <li>Dùng “Xuất config” để tải JSON và thay thế file `posts/_config.json` khi muốn deploy chính thức.</li>
+              <li>Khi chạy <code>npm run dev</code>, “Lưu thay đổi” ghi thẳng vào <code>posts/_config.json</code>.</li>
+              <li>Trên GitHub Pages hãy xuất JSON, thay file rồi commit/push để máy tính và điện thoại cùng dữ liệu.</li>
             </ol>
             <button type="button" onClick={save} className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700"><Save size={16} /> Lưu thay đổi</button>
           </aside>
         </div>
       </main>
-      <Toast message={saved ? 'Đã lưu và cập nhật giao diện.' : ''} />
+      <Toast message={saved ? (saveMessage || 'Đã lưu và cập nhật giao diện.') : ''} />
     </>
   );
 }

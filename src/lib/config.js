@@ -1,10 +1,14 @@
-import config from '../../posts/_config.json';
+import bundledConfig from '../../posts/_config.json';
 
 const OVERRIDES_KEY = 'blogger-config-overrides';
 const CONFIG_EVENT = 'blogger-config-updated';
 
 function isObject(value) {
   return value && typeof value === 'object' && !Array.isArray(value);
+}
+
+function cloneConfig(value) {
+  return JSON.parse(JSON.stringify(value));
 }
 
 function mergeConfig(base, overrides) {
@@ -17,22 +21,43 @@ function mergeConfig(base, overrides) {
   }, {});
 }
 
-export function getConfigOverrides() {
+function discardLegacyBrowserConfig() {
   try {
-    return JSON.parse(localStorage.getItem(OVERRIDES_KEY) || '{}');
+    localStorage.removeItem(OVERRIDES_KEY);
   } catch {
-    return {};
+    // localStorage may be unavailable
   }
 }
 
-export function saveConfigOverrides(overrides) {
-  localStorage.setItem(OVERRIDES_KEY, JSON.stringify(overrides));
-  window.dispatchEvent(new Event(CONFIG_EVENT));
+discardLegacyBrowserConfig();
+
+let runtimeConfig = cloneConfig(bundledConfig);
+
+function notifyConfigUpdated() {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event(CONFIG_EVENT));
+  }
 }
 
-export function clearConfigOverrides() {
-  localStorage.removeItem(OVERRIDES_KEY);
-  window.dispatchEvent(new Event(CONFIG_EVENT));
+if (import.meta.hot) {
+  import.meta.hot.accept('../../posts/_config.json', (mod) => {
+    if (!mod?.default) return;
+    runtimeConfig = cloneConfig(mod.default);
+    notifyConfigUpdated();
+  });
+}
+
+async function writeConfigFile(nextConfig) {
+  try {
+    const response = await fetch('/__save-config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(nextConfig),
+    });
+    return response.ok;
+  } catch {
+    return false;
+  }
 }
 
 export function getConfigEventName() {
@@ -40,17 +65,27 @@ export function getConfigEventName() {
 }
 
 /**
- * Returns the full site configuration object.
- * @returns {Object} The complete config from posts/_config.json
+ * Returns the live site configuration.
+ * Source of truth is posts/_config.json. Browser-local overrides are ignored
+ * so every device shows the same deployed data.
  */
 export function getConfig() {
-  return mergeConfig(config, getConfigOverrides());
+  return runtimeConfig;
 }
 
-/**
- * Returns the base site URL from config.
- * @returns {string} The site URL (e.g. "https://username.github.io/blogger")
- */
 export function getSiteUrl() {
-  return config.site.url;
+  return bundledConfig.site.url;
+}
+
+export async function persistConfig(patch) {
+  runtimeConfig = mergeConfig(cloneConfig(runtimeConfig), patch);
+  notifyConfigUpdated();
+  const savedToDisk = await writeConfigFile(runtimeConfig);
+  return { savedToDisk };
+}
+
+export async function clearConfigOverrides() {
+  runtimeConfig = cloneConfig(bundledConfig);
+  notifyConfigUpdated();
+  return { savedToDisk: false };
 }

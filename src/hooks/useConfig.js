@@ -3,7 +3,7 @@ import { getConfig, getConfigEventName } from '../lib/config.js';
 
 /**
  * Hook để lấy cấu hình site từ posts/_config.json.
- * Vì config là static, trả về trực tiếp không cần state.
+ * Mọi thiết bị đọc cùng file này; không dùng localStorage làm nguồn dữ liệu.
  *
  * @returns {Object} Config object đầy đủ
  */
