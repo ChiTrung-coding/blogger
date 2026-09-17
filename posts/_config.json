@@ -82,6 +82,14 @@
       "Phát triển kỹ năng mềm và tiếng Anh",
       "Hướng đến các dự án thực tế và cơ hội việc làm tốt hơn"
     ],
+    "education": [
+      {
+        "organization": "Đại học Bách Khoa Hà Nội (HUST)",
+        "role": "Sinh viên Kỹ thuật Công nghệ Thông tin",
+        "period": "2017 - 2021",
+        "description": "Tốt nghiệp ngành Kỹ thuật Công nghệ Thông tin với GPA 3.4/4.0."
+      }
+    ],
     "quote": "Mỗi ngày học thêm một điều mới, là một bước tiến gần hơn đến mục tiêu của mình."
   },
   "categories": [
