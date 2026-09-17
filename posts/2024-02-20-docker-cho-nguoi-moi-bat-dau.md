@@ -5,7 +5,7 @@ date: "2024-02-20"
 category: "DevOps"
 tags: ["Docker", "DevOps", "Container", "Linux"]
 excerpt: "Hướng dẫn toàn diện về Docker từ những khái niệm cơ bản đến triển khai ứng dụng web hoàn chỉnh."
-thumbnail: "/images/posts/docker-beginner.jpg"
+thumbnail: "/images/IT2.jpg"
 published: true
 ---
 
