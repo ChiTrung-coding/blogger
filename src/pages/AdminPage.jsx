@@ -29,6 +29,7 @@ function slugify(value) {
 }
 
 function Input({ label, value, onChange, textarea = false, type = 'text', options = null }) {
+  textarea = textarea || label.startsWith('Kỹ năng mềm');
   if (label === 'Nội dung Markdown') {
     return <MarkdownEditor value={value} onChange={onChange} />;
   }
@@ -254,7 +255,7 @@ export default function AdminPage() {
       .filter((skill) => skill.name);
     const avatar = await persistImage(profileForm.avatar, 'avatar');
     const owner = { ...config.owner, ...profileForm, avatar };
-    const skills = { ...config.skills, technical, soft: skillsForm.soft.split(',').map((item) => item.trim()).filter(Boolean) };
+    const skills = { ...config.skills, technical, soft: skillsForm.soft.split(/[,\n]/).map((item) => item.trim()).filter(Boolean) };
     saveConfigOverrides({ ...overrides, owner, skills }); notify('Lưu tất cả thành công.');
   }
 
