@@ -1,0 +1,11 @@
+import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
+import { useConfig } from '../hooks/useConfig';
+import { resolveAssetUrl } from '../lib/assets';
+
+export default function AboutPage() {
+  const { site, owner, skills = {} } = useConfig();
+  const technical = (skills.technical || []).slice(0, 20);
+  const soft = (skills.soft || []).slice(0, 10);
+  return <><Helmet><title>{`Giới thiệu | ${site.name}`}</title><meta name="description" content={(owner.bio || '').slice(0, 160)} /><link rel="canonical" href={`${site.url}/#/about`} /></Helmet><main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10"><section className="flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left"><img src={resolveAssetUrl(owner.avatar)} alt={owner.name} className="h-32 w-32 rounded-full object-cover ring-4 ring-blue-500/20" /><div><h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Giới thiệu</h1><p className="mt-1 text-blue-600 dark:text-blue-400">{owner.title}</p><p className="mt-4 max-w-2xl leading-relaxed text-slate-600 dark:text-slate-400">{(owner.bio || '').slice(0, 1000)}</p><Link to="/contact" className="mt-5 inline-flex rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">Liên hệ với mình</Link></div></section><section className="mt-12"><h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Kỹ năng kỹ thuật</h2><div className="mt-6 grid gap-5 sm:grid-cols-2">{technical.map((skill) => <div key={skill.name}><div className="mb-1 flex justify-between text-sm"><span className="text-slate-700 dark:text-slate-300">{skill.name}</span><span className="font-semibold text-blue-600 dark:text-blue-400">{skill.level}%</span></div><div className="skill-bar"><div className="skill-bar-fill" style={{ width: `${Math.min(100, Math.max(0, skill.level || 0))}%` }} /></div></div>)}</div></section><section className="mt-12"><h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Kỹ năng mềm</h2><div className="mt-5 flex flex-wrap gap-2">{soft.map((item) => <span key={item} className="rounded-full bg-slate-100 px-3 py-1.5 text-sm text-slate-700 dark:bg-slate-800 dark:text-slate-300">{item}</span>)}</div></section></main></>;
+}

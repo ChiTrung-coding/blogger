@@ -1,0 +1,156 @@
+{
+  "site": {
+    "name": "Trung's Blog",
+    "description": "Blog kỹ thuật cá nhân về Web Development, IT Support và DevOps",
+    "url": "https://ChiTrung-coding.github.io/blogger",
+    "defaultOgImage": "/images/default-og.jpg"
+  },
+  "adminAuth": {
+    "username": "admin",
+    "password": "admin"
+  },
+  "owner": {
+    "name": "Nguyễn Trần Chí Trung",
+    "title": "",
+    "motto": "Support. Build. Improve.",
+    "location": "Tp. Hồ Chí Minh, Việt Nam",
+    "education": "VAA – CNTT",
+    "bio": "Xin chào! Tôi là Trung, người làm việc trong lĩnh vực IT với định hướng kết hợp giữa IT Support và Software Development. Tôi quan tâm đến việc giải quyết vấn đề, hỗ trợ người dùng và xây dựng các giải pháp phần mềm thực tế. Blog này là nơi tôi chia sẻ kiến thức, kinh nghiệm và những điều tôi học được trong quá trình làm việc với công nghệ.",
+    "avatar": "/images/DSC_3690.jpeg",
+    "email": "hello@chitrung-coding.dev",
+    "social": {
+      "github": "https://github.com/ChiTrung-coding",
+      "linkedin": "https://www.linkedin.com/in/ch%C3%AD-trung-nguy%E1%BB%85n-tr%E1%BA%A7n-546592312/",
+      "facebook": "https://www.facebook.com/per.tn08"
+    }
+  },
+  "skills": {
+    "technical": [
+      {
+        "name": "Windows Installation / Setup",
+        "level": 85
+      },
+      {
+        "name": "Windows / Software Troubleshooting",
+        "level": 80
+      },
+      {
+        "name": "Laravel / PHP",
+        "level": 80
+      },
+      {
+        "name": "Git / GitHub",
+        "level": 65
+      },
+      {
+        "name": "Network / Wi-Fi Troubleshooting",
+        "level": 65
+      },
+      {
+        "name": "Linux / Shell Script",
+        "level": 30
+      }
+    ],
+    "soft": [
+      "Làm việc nhóm",
+      "Giải quyết vấn đề",
+      "Giao tiếp hiệu quả",
+      "Quản lý thời gian",
+      "Tư duy phân tích"
+    ]
+  },
+  "categories": [
+    {
+      "name": "Web Development",
+      "color": "#3B82F6"
+    },
+    {
+      "name": "IT Support",
+      "color": "#10B981"
+    },
+    {
+      "name": "DevOps",
+      "color": "#F59E0B"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Personal Blogger",
+      "description": "Blog cá nhân xây dựng bằng React + Vite, deploy trên GitHub Pages. Hỗ trợ Markdown, dark mode, tìm kiếm full-text và bình luận qua Giscus.",
+      "image": "/images/projects/blogger.jpg",
+      "technologies": [
+        "React",
+        "Vite",
+        "Tailwind CSS",
+        "Gray-matter"
+      ],
+      "github": "https://github.com/ChiTrung-coding/blogger",
+      "demo": "https://ChiTrung-coding.github.io/blogger",
+      "sortOrder": 1
+    },
+    {
+      "name": "IT Helpdesk System",
+      "description": "Hệ thống quản lý yêu cầu hỗ trợ IT nội bộ, tích hợp ticketing, phân công kỹ thuật viên và báo cáo thống kê theo thời gian thực.",
+      "image": "/images/projects/helpdesk.jpg",
+      "technologies": [
+        "Laravel",
+        "Vue.js",
+        "MySQL",
+        "Redis"
+      ],
+      "github": "https://github.com/ChiTrung-coding/it-helpdesk",
+      "demo": null,
+      "sortOrder": 2
+    },
+    {
+      "name": "Docker Deployment Toolkit",
+      "description": "Bộ công cụ triển khai ứng dụng web bằng Docker Compose, bao gồm Nginx reverse proxy, Let's Encrypt SSL tự động và monitoring với Prometheus.",
+      "image": "/images/projects/docker-toolkit.jpg",
+      "technologies": [
+        "Docker",
+        "Nginx",
+        "Bash",
+        "Prometheus"
+      ],
+      "github": "https://github.com/ChiTrung-coding/docker-deploy-toolkit",
+      "demo": null,
+      "sortOrder": 3
+    }
+  ],
+  "experiences": [
+    {
+      "organization": "Công ty Cổ phần Công nghệ FPT",
+      "role": "Full-Stack Developer",
+      "type": "work",
+      "startDate": "2022-06",
+      "endDate": null,
+      "description": "Phát triển và bảo trì các ứng dụng web nội bộ cho khách hàng doanh nghiệp. Sử dụng React ở frontend và Laravel ở backend. Triển khai CI/CD pipeline trên AWS EC2 và tham gia code review hàng tuần."
+    },
+    {
+      "organization": "Công ty TNHH TechViet Solutions",
+      "role": "Junior Web Developer",
+      "type": "work",
+      "startDate": "2021-01",
+      "endDate": "2022-05",
+      "description": "Xây dựng website thương mại điện tử cho khách hàng SME. Làm việc chủ yếu với PHP/Laravel, jQuery và MySQL. Hỗ trợ IT hạ tầng máy chủ Linux và xử lý sự cố kỹ thuật."
+    },
+    {
+      "organization": "Đại học Bách Khoa Hà Nội (HUST)",
+      "role": "Sinh viên Kỹ thuật Công nghệ Thông tin",
+      "type": "education",
+      "startDate": "2017-09",
+      "endDate": "2021-06",
+      "description": "Tốt nghiệp ngành Kỹ thuật Công nghệ Thông tin với GPA 3.4/4.0. Đề tài tốt nghiệp: Xây dựng hệ thống quản lý tài sản CNTT theo chuẩn ITIL v4 sử dụng Laravel + React."
+    }
+  ],
+  "contact": {
+    "formspreeId": "xyzabc123",
+    "adminEmail": "hello@ChiTrung-coding.dev"
+  },
+  "giscus": {
+    "repo": "ChiTrung-coding/blogger",
+    "repoId": "R_kgDOAAAAAAAA",
+    "category": "Comments",
+    "categoryId": "DIC_kwDOAAAAAAAA"
+  }
+}

@@ -1,0 +1,193 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =============================
+   Base / Typography
+   ============================= */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-slate-900 font-sans antialiased;
+  }
+
+  .dark body {
+    @apply bg-slate-900 text-slate-100;
+  }
+}
+
+/* =============================
+   Prose (Markdown content)
+   ============================= */
+@layer components {
+  .prose-blog {
+    @apply prose prose-slate max-w-none
+           prose-headings:font-semibold
+           prose-a:text-deep-blue-600 prose-a:no-underline hover:prose-a:underline
+           prose-code:before:content-none prose-code:after:content-none
+           prose-code:bg-slate-100 prose-code:text-slate-800
+           prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm prose-code:font-normal
+           prose-pre:bg-slate-900 prose-pre:text-slate-100
+           prose-blockquote:border-l-deep-blue-600 prose-blockquote:text-slate-600
+           prose-img:rounded-lg prose-img:shadow-md;
+  }
+
+  .dark .prose-blog {
+    @apply prose-invert
+           prose-a:text-deep-blue-400 hover:prose-a:text-deep-blue-300
+           prose-code:bg-slate-800 prose-code:text-slate-200
+           prose-blockquote:text-slate-400 prose-blockquote:border-l-deep-blue-500;
+  }
+
+  /* =============================
+     Code Blocks (rehype-highlight)
+     ============================= */
+  .prose-blog pre {
+    @apply rounded-xl overflow-x-auto text-sm leading-relaxed shadow-lg;
+  }
+
+  .prose-blog pre code {
+    @apply bg-transparent text-inherit p-0 rounded-none text-sm;
+  }
+
+  /* highlight.js theme overrides */
+  .hljs {
+    @apply bg-slate-900 text-slate-100 rounded-xl p-4;
+  }
+
+  .dark .hljs {
+    @apply bg-slate-800;
+  }
+
+  /* =============================
+     Table of Contents (TOC)
+     ============================= */
+  .toc {
+    @apply bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm;
+  }
+
+  .dark .toc {
+    @apply bg-slate-800 border-slate-700;
+  }
+
+  .toc h3 {
+    @apply text-xs font-semibold uppercase tracking-widest text-slate-500 mb-3;
+  }
+
+  .dark .toc h3 {
+    @apply text-slate-400;
+  }
+
+  .toc ul {
+    @apply space-y-1 list-none m-0 p-0;
+  }
+
+  .toc li {
+    @apply leading-snug;
+  }
+
+  .toc a {
+    @apply text-slate-600 hover:text-deep-blue-600 transition-colors duration-150 no-underline block py-0.5;
+  }
+
+  .dark .toc a {
+    @apply text-slate-400 hover:text-deep-blue-400;
+  }
+
+  .toc a.active {
+    @apply text-deep-blue-600 font-medium;
+  }
+
+  .dark .toc a.active {
+    @apply text-deep-blue-400;
+  }
+
+  /* h3 indent inside TOC */
+  .toc li.toc-h3 {
+    @apply pl-4;
+  }
+
+  /* =============================
+     Timeline (Experience page)
+     ============================= */
+  .timeline {
+    @apply relative pl-8;
+  }
+
+  /* vertical line */
+  .timeline::before {
+    content: '';
+    @apply absolute left-3 top-0 bottom-0 w-0.5 bg-slate-200;
+  }
+
+  .dark .timeline::before {
+    @apply bg-slate-700;
+  }
+
+  .timeline-item {
+    @apply relative mb-8 last:mb-0;
+  }
+
+  /* dot on the line */
+  .timeline-item::before {
+    content: '';
+    @apply absolute -left-5 top-1.5 w-3 h-3 rounded-full border-2 border-white bg-deep-blue-500 shadow;
+  }
+
+  .dark .timeline-item::before {
+    @apply border-slate-900 bg-deep-blue-400;
+  }
+
+  .timeline-item.work::before {
+    @apply bg-deep-blue-500;
+  }
+
+  .timeline-item.education::before {
+    @apply bg-purple-500;
+  }
+
+  .timeline-card {
+    @apply bg-white border border-slate-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+
+  .dark .timeline-card {
+    @apply bg-slate-800 border-slate-700;
+  }
+
+  /* =============================
+     Category Badge
+     ============================= */
+  .category-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-white;
+  }
+
+  /* =============================
+     Article Card
+     ============================= */
+  .article-card {
+    @apply bg-white rounded-2xl border border-slate-200 overflow-hidden
+           shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+
+  .dark .article-card {
+    @apply bg-slate-800 border-slate-700;
+  }
+
+  /* =============================
+     Skill Progress Bar
+     ============================= */
+  .skill-bar {
+    @apply h-2 rounded-full bg-slate-200 overflow-hidden;
+  }
+
+  .dark .skill-bar {
+    @apply bg-slate-700;
+  }
+
+  .skill-bar-fill {
+    @apply h-full rounded-full bg-gradient-to-r from-deep-blue-500 to-navy-500 transition-all duration-700;
+  }
+}
