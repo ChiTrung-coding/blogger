@@ -5,7 +5,7 @@ date: "2024-04-05"
 category: "Web Development"
 tags: ["Laravel", "PHP", "Eloquent", "Database", "ORM"]
 excerpt: "Nắm vững tất cả các loại quan hệ trong Eloquent ORM của Laravel với các ví dụ thực tế."
-thumbnail: "/images/posts/laravel-eloquent.jpg"
+thumbnail: "/images/IT2.jpg"
 published: true
 ---
 
