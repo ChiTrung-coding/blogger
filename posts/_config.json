@@ -1,6 +1,6 @@
 {
   "site": {
-    "name": "Trung's Blog",
+    "name": "Blogger",
     "description": "Blog kỹ thuật cá nhân về Web Development, IT Support và DevOps",
     "url": "https://ChiTrung-coding.github.io/blogger",
     "defaultOgImage": "/images/default-og.jpg"
@@ -11,17 +11,17 @@
   },
   "owner": {
     "name": "Nguyễn Trần Chí Trung",
-    "title": "sdad",
+    "title": "Nhân Viên Kỹ Thuật",
     "motto": "Support. Build. Improve.",
     "location": "Tp. Hồ Chí Minh, Việt Nam",
-    "education": "VAA – CNTT",
-    "bio": "Xin chào! Tôi là Trung, người làm việc trong lĩnh vực IT với định hướng kết hợp giữa IT Support và Software Development. Tôi quan tâm đến việc giải quyết vấn đề, hỗ trợ người dùng và xây dựng các giải pháp phần mềm thực tế. Blog này là nơi tôi chia sẻ kiến thức, kinh nghiệm và những điều tôi học được trong quá trình làm việc với công nghệ.",
+    "education": "Học Viện Hàng Không Việt Nam – CNTT",
+    "bio": "Xin chào! Tôi là Trung, một người làm việc trong lĩnh vực Công nghệ Thông tin với định hướng phát triển đa dạng giữa phát triển phần mềm và hỗ trợ kỹ thuật. Tôi có kinh nghiệm làm việc với website, ứng dụng web, hệ thống và các công việc liên quan đến cài đặt, cấu hình, xử lý sự cố phần mềm, hệ điều hành và mạng cơ bản. Tôi yêu thích việc tìm hiểu công nghệ, phân tích và giải quyết các vấn đề phát sinh trong quá trình làm việc. Bên cạnh việc phát triển các giải pháp phần mềm phục vụ nhu cầu thực tế, tôi cũng quan tâm đến việc hỗ trợ người dùng và đảm bảo hệ thống hoạt động ổn định. Blog này là nơi tôi chia sẻ kiến thức, kinh nghiệm làm việc, các dự án cá nhân và những điều tôi học được trong quá trình phát triển bản thân trong lĩnh vực IT.",
     "avatar": "/images/DSC_3690.jpeg",
-    "email": "hello@chitrung-coding.dev",
+    "email": "trungper08@gmail.com",
     "contact": {
       "zalo": "0327669552",
       "messenger": "https://www.facebook.com/per.tn08",
-      "phone": "#"
+      "phone": "0327 669 552"
     },
     "social": {
       "github": "https://github.com/ChiTrung-coding",
@@ -66,7 +66,7 @@
     ]
   },
   "about": {
-    "birthDate": "24/06/2004",
+    "birthDate": "03/08/2004",
     "focus": "IT Support / Software Development",
     "direction": "Kết hợp giữa phát triển phần mềm và hỗ trợ kỹ thuật, hướng đến việc tạo ra các giải pháp công nghệ hiệu quả, ổn định và phù hợp với nhu cầu thực tế.",
     "tools": {
@@ -83,10 +83,10 @@
       "Hướng đến các dự án thực tế và cơ hội việc làm tốt hơn"
     ],
     "education": {
-      "organization": "Đại học Bách Khoa Hà Nội (HUST)",
-      "role": "Sinh viên Kỹ thuật Công nghệ Thông tin",
-      "period": "2017 - 2021",
-      "description": "Tốt nghiệp ngành Kỹ thuật Công nghệ Thông tin với GPA 3.4/4.0."
+      "organization": "Học Viện Hàng Không Việt Nam (VAA)",
+      "role": "Chuyên Ngành Công nghệ Thông tin",
+      "period": "2022 - 2026",
+      "description": "Tốt nghiệp chuyên ngành Công nghệ Thông tin với GPA 3.18/4.0."
     },
     "quote": "Mỗi ngày học thêm một điều mới, là một bước tiến gần hơn đến mục tiêu của mình."
   },
@@ -98,10 +98,6 @@
     {
       "name": "IT Support",
       "color": "#10B981"
-    },
-    {
-      "name": "DevOps",
-      "color": "#F59E0B"
     }
   ],
   "projects": [
