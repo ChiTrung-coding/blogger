@@ -18,7 +18,9 @@ export default function AboutPage() {
   const technical = skills.technical || [];
   const soft = skills.soft || [];
   const tools = about.tools || {};
-  const education = about.education?.length ? about.education : experiences.filter((item) => item.type === 'education');
+  const education = Array.isArray(about.education)
+    ? (about.education.length ? about.education : experiences.filter((item) => item.type === 'education'))
+    : (about.education?.organization ? [about.education] : experiences.filter((item) => item.type === 'education'));
   const work = experiences.filter((item) => item.type !== 'education');
   const contact = owner.contact || {};
 

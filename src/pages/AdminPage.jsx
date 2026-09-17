@@ -24,6 +24,13 @@ const emptyPost = { title: '', slug: '', date: new Date().toISOString().slice(0,
 const emptyProject = { name: '', description: '', image: '', technologies: [], github: '', demo: '', sortOrder: 1 };
 const emptyExperience = { organization: '', role: '', type: 'work', startDate: '', endDate: '', description: '' };
 const emptyCategory = { name: '', color: '#3B82F6' };
+const toolOptions = {
+  'Ngôn ngữ lập trình': ['PHP', 'Python', 'JavaScript', 'TypeScript', 'Node.js'],
+  'Framework / Library': ['Laravel', 'React', 'Vue', 'Bootstrap', 'Tailwind CSS'],
+  'Cơ sở dữ liệu': ['MySQL', 'SQL Server', 'MongoDB', 'PostgreSQL', 'Redis'],
+  'Hệ điều hành': ['Windows', 'Linux', 'macOS'],
+  'Công cụ khác': ['Git', 'Docker', 'VS Code', 'Figma', 'AWS'],
+};
 
 function slugify(value) {
   return value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
@@ -109,11 +116,11 @@ function ActionButton({ children, onClick, danger = false, type = 'button' }) {
   return <button type={type} onClick={onClick} className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-medium ${danger ? 'text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30' : 'bg-blue-600 text-white hover:bg-blue-700'}`}>{children}</button>;
 }
 
-function AboutContentEditor({ form, setForm, onSave, onUpdateEducation, onAddEducation, onRemoveEducation }) {
+function AboutContentEditor({ form, setForm, onSave, onUpdateEducation, onToggleTool }) {
   return <Panel title="Nội dung trang Giới thiệu"><div className="space-y-6">
     <div className="grid gap-4 md:grid-cols-2"><Input label="Ngày tháng năm sinh" value={form.birthDate} onChange={(value) => setForm({ ...form, birthDate: value })} /><Input label="Định hướng chính" value={form.focus} onChange={(value) => setForm({ ...form, focus: value })} /><div className="md:col-span-2"><Input label="Mô tả định hướng" textarea value={form.direction} onChange={(value) => setForm({ ...form, direction: value })} /></div><div className="md:col-span-2"><Input label="Mục tiêu & Định hướng (mỗi dòng một mục tiêu)" textarea value={form.goals} onChange={(value) => setForm({ ...form, goals: value })} /></div><div className="md:col-span-2"><Input label="Câu trích dẫn" textarea value={form.quote} onChange={(value) => setForm({ ...form, quote: value })} /></div></div>
-    <fieldset><div className="flex items-center justify-between"><legend className="text-sm font-semibold text-slate-800 dark:text-slate-200">Công nghệ & Công cụ</legend><span className="text-xs text-slate-500">Mỗi nhóm phân cách bằng dấu phẩy</span></div><div className="mt-3 grid gap-4 md:grid-cols-2">{Object.entries(form.tools || {}).map(([group, value]) => <Input key={group} label={group} value={value} onChange={(nextValue) => setForm({ ...form, tools: { ...form.tools, [group]: nextValue } })} />)}</div></fieldset>
-    <fieldset><div className="flex items-center justify-between"><legend className="text-sm font-semibold text-slate-800 dark:text-slate-200">Học vấn</legend><button type="button" onClick={onAddEducation} className="inline-flex items-center gap-1 rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white"><Plus size={14} /> Thêm học vấn</button></div><div className="mt-3 space-y-4">{form.education.map((item, index) => <div key={`${item.organization}-${index}`} className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900"><div className="grid gap-3 md:grid-cols-2"><Input label="Trường / cơ sở đào tạo" value={item.organization} onChange={(value) => onUpdateEducation(index, 'organization', value)} /><Input label="Chuyên ngành / vai trò" value={item.role} onChange={(value) => onUpdateEducation(index, 'role', value)} /><Input label="Thời gian" value={item.period} onChange={(value) => onUpdateEducation(index, 'period', value)} /><div className="md:col-span-2"><Input label="Mô tả học vấn" textarea value={item.description} onChange={(value) => onUpdateEducation(index, 'description', value)} /></div></div><button type="button" onClick={() => onRemoveEducation(index)} className="mt-3 text-sm text-red-600">Xóa mục học vấn</button></div>)}</div></fieldset>
+    <fieldset><div className="flex items-center justify-between"><legend className="text-sm font-semibold text-slate-800 dark:text-slate-200">Công nghệ & Công cụ</legend><span className="text-xs text-slate-500">Chọn các công nghệ bạn sử dụng</span></div><div className="mt-3 grid gap-4 md:grid-cols-2">{Object.entries(toolOptions).map(([group, options]) => { const selected = (form.tools[group] || '').split(',').map((item) => item.trim()).filter(Boolean); return <div key={group}><p className="mb-2 text-sm font-medium text-slate-700 dark:text-slate-300">{group}</p><div className="flex flex-wrap gap-2">{options.map((tool) => <button key={tool} type="button" onClick={() => onToggleTool(group, tool)} className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${selected.includes(tool) ? 'border-blue-600 bg-blue-600 text-white' : 'border-slate-300 bg-white text-slate-600 hover:border-blue-400 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300'}`}>{tool}</button>)}</div></div>; })}</div></fieldset>
+    <fieldset><legend className="text-sm font-semibold text-slate-800 dark:text-slate-200">Học vấn</legend><div className="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900"><div className="grid gap-3 md:grid-cols-2"><Input label="Trường / cơ sở đào tạo" value={form.education.organization} onChange={(value) => onUpdateEducation('organization', value)} /><Input label="Chuyên ngành / vai trò" value={form.education.role} onChange={(value) => onUpdateEducation('role', value)} /><Input label="Thời gian" value={form.education.period} onChange={(value) => onUpdateEducation('period', value)} /><div className="md:col-span-2"><Input label="Mô tả học vấn" textarea value={form.education.description} onChange={(value) => onUpdateEducation('description', value)} /></div></div></div></fieldset>
     <ActionButton onClick={onSave}><Save size={16} /> Lưu nội dung Giới thiệu</ActionButton>
   </div></Panel>;
 }
@@ -144,7 +151,7 @@ export default function AdminPage() {
     quote: config.about?.quote || '',
     goals: (config.about?.goals || []).join('\n'),
     tools: Object.fromEntries(Object.entries(config.about?.tools || {}).map(([group, items]) => [group, (items || []).join(', ')])),
-    education: (config.about?.education || []).map((item) => ({ ...item })),
+    education: Array.isArray(config.about?.education) ? { ...(config.about.education[0] || {}) } : { ...(config.about?.education || {}) },
   }));
   const [notice, setNotice] = useState('');
   const overrides = getConfigOverrides();
@@ -295,16 +302,16 @@ export default function AdminPage() {
     setSkillsForm((current) => ({ ...current, technical: current.technical.filter((_, skillIndex) => skillIndex !== index) }));
   }
 
-  function updateEducation(index, field, value) {
-    setAboutForm((current) => ({ ...current, education: current.education.map((item, itemIndex) => itemIndex === index ? { ...item, [field]: value } : item) }));
+  function updateEducation(field, value) {
+    setAboutForm((current) => ({ ...current, education: { ...current.education, [field]: value } }));
   }
 
-  function addEducation() {
-    setAboutForm((current) => ({ ...current, education: [...current.education, { organization: '', role: '', period: '', description: '' }] }));
-  }
-
-  function removeEducation(index) {
-    setAboutForm((current) => ({ ...current, education: current.education.filter((_, itemIndex) => itemIndex !== index) }));
+  function toggleTool(group, tool) {
+    setAboutForm((current) => {
+      const selected = (current.tools[group] || '').split(',').map((item) => item.trim()).filter(Boolean);
+      const next = selected.includes(tool) ? selected.filter((item) => item !== tool) : [...selected, tool];
+      return { ...current, tools: { ...current.tools, [group]: next.join(', ') } };
+    });
   }
 
   function saveAboutContent() {
@@ -313,7 +320,7 @@ export default function AdminPage() {
       ...aboutForm,
       goals: aboutForm.goals.split(/\n/).map((item) => item.trim()).filter(Boolean),
       tools: Object.fromEntries(Object.entries(aboutForm.tools || {}).map(([group, items]) => [group, items.split(/[,\n]/).map((item) => item.trim()).filter(Boolean)])),
-      education: aboutForm.education.filter((item) => item.organization.trim() || item.role.trim()).map((item) => ({ ...item, organization: item.organization.trim(), role: item.role.trim(), period: item.period.trim(), description: item.description.trim() })),
+      education: { ...aboutForm.education, organization: aboutForm.education.organization.trim(), role: aboutForm.education.role.trim(), period: aboutForm.education.period.trim(), description: aboutForm.education.description.trim() },
     };
     saveConfigOverrides({ ...overrides, about });
     setAboutForm((current) => ({ ...current, education: about.education }));
@@ -340,7 +347,7 @@ export default function AdminPage() {
           {tab === 'projects' && <CollectionManager title="Dự án" items={projects} form={projectForm} setForm={setProjectForm} editing={editingProject} setEditing={setEditingProject} empty={emptyProject} fields={['name', 'description', 'image', 'technologies', 'github', 'demo', 'sortOrder']} options={{ technologies: availableTechnologies }} onSave={saveProject} onDelete={(index) => removeCollection('projects', index)} />}
           {tab === 'experiences' && <CollectionManager title="Kinh nghiệm" items={experiences} form={experienceForm} setForm={setExperienceForm} editing={editingExperience} setEditing={setEditingExperience} empty={emptyExperience} fields={['organization', 'role', 'type', 'startDate', 'endDate', 'description']} onSave={() => saveCollection('experiences', experienceForm, editingExperience, setEditingExperience, emptyExperience)} onDelete={(index) => removeCollection('experiences', index)} />}
           {tab === 'categories' && <CollectionManager title="Danh mục" items={config.categories || []} form={categoryForm} setForm={setCategoryForm} editing={editingCategory} setEditing={setEditingCategory} empty={emptyCategory} fields={['name', 'color']} onSave={() => saveCollection('categories', categoryForm, editingCategory, setEditingCategory, emptyCategory)} onDelete={(index) => removeCollection('categories', index)} />}
-          {tab === 'aboutContent' && <AboutContentEditor form={aboutForm} setForm={setAboutForm} onSave={saveAboutContent} onUpdateEducation={updateEducation} onAddEducation={addEducation} onRemoveEducation={removeEducation} />}
+          {tab === 'aboutContent' && <AboutContentEditor form={aboutForm} setForm={setAboutForm} onSave={saveAboutContent} onUpdateEducation={updateEducation} onToggleTool={toggleTool} />}
           {tab === 'profile' && <Panel title="Thông tin giới thiệu"><form onSubmit={saveProfile} className="grid gap-4 md:grid-cols-2">{[['name', 'Tên'], ['title', 'Chức danh'], ['motto', 'Motto'], ['location', 'Địa điểm'], ['education', 'Học vấn'], ['email', 'Email'], ['avatar', 'Avatar URL']].map(([name, label]) => <Input key={name} label={label} value={profileForm[name]} onChange={(value) => setProfileForm({ ...profileForm, [name]: value })} />)}<div className="md:col-span-2"><Input label="Tiểu sử" textarea value={profileForm.bio} onChange={(value) => setProfileForm({ ...profileForm, bio: value })} /></div>{['github', 'linkedin', 'facebook'].map((name) => <Input key={name} label={`${name} URL`} value={profileForm.social?.[name] || ''} onChange={(value) => setProfileForm({ ...profileForm, social: { ...profileForm.social, [name]: value } })} />)}<fieldset className="md:col-span-2"><div className="flex items-center justify-between"><legend className="text-sm font-medium text-slate-700 dark:text-slate-300">Kỹ năng kỹ thuật</legend><button type="button" onClick={addTechnicalSkill} className="inline-flex items-center gap-1 rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-700"><Plus size={14} /> Thêm kỹ năng</button></div><div className="mt-3 space-y-3">{skillsForm.technical.map((skill, index) => <div key={`${skill.name}-${index}`} className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900"><div className="flex items-end gap-3"><label className="min-w-0 flex-1 text-xs font-medium text-slate-500 dark:text-slate-400">Tên kỹ năng<input value={skill.name} onChange={(event) => updateTechnicalSkill(index, 'name', event.target.value)} className="mt-1 block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-normal text-slate-900 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100" /></label><button type="button" onClick={() => removeTechnicalSkill(index)} aria-label={`Xóa ${skill.name || 'kỹ năng'}`} className="rounded-lg p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30"><Trash2 size={17} /></button></div><div className="mt-3 flex items-center gap-3"><input type="range" min="0" max="100" value={skill.level} onChange={(event) => updateTechnicalSkill(index, 'level', event.target.value)} className="h-2 flex-1 accent-blue-600" /><output className="w-12 text-right text-sm font-semibold text-blue-600">{skill.level}%</output></div></div>)}{skillsForm.technical.length === 0 && <p className="text-sm text-slate-500">Chưa có kỹ năng. Hãy thêm kỹ năng đầu tiên.</p>}</div></fieldset><div className="md:col-span-2"><Input textarea label="Kỹ năng mềm (mỗi dòng một kỹ năng)" value={skillsForm.soft} onChange={(value) => setSkillsForm({ ...skillsForm, soft: value })} /></div><fieldset className="md:col-span-2 rounded-xl border border-blue-200 bg-blue-50/50 p-4 dark:border-blue-900 dark:bg-blue-950/20"><legend className="px-1 text-sm font-semibold text-blue-700 dark:text-blue-300">Nội dung trang Giới thiệu</legend><div className="mt-3 grid gap-4 md:grid-cols-2"><Input label="Ngày sinh" value={aboutForm.birthDate} onChange={(value) => setAboutForm({ ...aboutForm, birthDate: value })} /><Input label="Định hướng chính" value={aboutForm.focus} onChange={(value) => setAboutForm({ ...aboutForm, focus: value })} /><div className="md:col-span-2"><Input textarea label="Mô tả định hướng" value={aboutForm.direction} onChange={(value) => setAboutForm({ ...aboutForm, direction: value })} /></div><div className="md:col-span-2"><Input textarea label="Mục tiêu (mỗi dòng một mục tiêu)" value={aboutForm.goals} onChange={(value) => setAboutForm({ ...aboutForm, goals: value })} /></div><div className="md:col-span-2"><Input textarea label="Câu trích dẫn" value={aboutForm.quote} onChange={(value) => setAboutForm({ ...aboutForm, quote: value })} /></div>{Object.entries(aboutForm.tools).map(([group, value]) => <Input key={group} label={`${group} (phân cách bằng dấu phẩy)`} value={value} onChange={(nextValue) => setAboutForm({ ...aboutForm, tools: { ...aboutForm.tools, [group]: nextValue } })} />)}</div></fieldset><ActionButton type="submit"><Save size={16} /> Lưu tất cả</ActionButton></form></Panel>}
         </div>
       </div>
