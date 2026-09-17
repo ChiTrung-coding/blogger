@@ -1,7 +1,7 @@
 ---
 title: "Docker cho người mới bắt đầu: Từ cài đặt đến triển khai ứng dụng"
 slug: "docker-cho-nguoi-moi-bat-dau"
-date: "2024-02-20"
+date: "2026-02-20"
 category: "DevOps"
 tags: ["Docker", "DevOps", "Container", "Linux"]
 excerpt: "Hướng dẫn toàn diện về Docker từ những khái niệm cơ bản đến triển khai ứng dụng web hoàn chỉnh."
