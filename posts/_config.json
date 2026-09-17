@@ -162,17 +162,17 @@
       "description": "Xây dựng website thương mại điện tử cho khách hàng SME. Làm việc chủ yếu với PHP/Laravel, jQuery và MySQL. Hỗ trợ IT hạ tầng máy chủ Linux và xử lý sự cố kỹ thuật."
     },
     {
-      "organization": "Đại học Bách Khoa Hà Nội (HUST)",
-      "role": "Sinh viên Kỹ thuật Công nghệ Thông tin",
+      "organization": "Học Viện Hàng Không Việt Nam (VAA)",
+      "role": "Công nghệ Thông tin",
       "type": "education",
-      "startDate": "2017-09",
-      "endDate": "2021-06",
-      "description": "Tốt nghiệp ngành Kỹ thuật Công nghệ Thông tin với GPA 3.4/4.0. Đề tài tốt nghiệp: Xây dựng hệ thống quản lý tài sản CNTT theo chuẩn ITIL v4 sử dụng Laravel + React."
+      "startDate": "2025-03",
+      "endDate": "2025-06",
+      "description": "Tốt nghiệp ngành Kỹ thuật Công nghệ Thông tin với GPA 3.12/4.0. Đề tài tốt nghiệp: Xây dựng hệ thống quản lý tài sản CNTT theo chuẩn ITIL v4 sử dụng Laravel + React."
     }
   ],
   "contact": {
     "formspreeId": "xyzabc123",
-    "adminEmail": "hello@ChiTrung-coding.dev"
+    "adminEmail": "trungper08@gmail.com"
   },
   "giscus": {
     "repo": "ChiTrung-coding/blogger",
