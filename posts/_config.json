@@ -18,6 +18,11 @@
     "bio": "Xin chào! Tôi là Trung, người làm việc trong lĩnh vực IT với định hướng kết hợp giữa IT Support và Software Development. Tôi quan tâm đến việc giải quyết vấn đề, hỗ trợ người dùng và xây dựng các giải pháp phần mềm thực tế. Blog này là nơi tôi chia sẻ kiến thức, kinh nghiệm và những điều tôi học được trong quá trình làm việc với công nghệ.",
     "avatar": "/images/DSC_3690.jpeg",
     "email": "hello@chitrung-coding.dev",
+    "contact": {
+      "zalo": "",
+      "messenger": "https://m.me/per.tn08",
+      "phone": ""
+    },
     "social": {
       "github": "https://github.com/ChiTrung-coding",
       "linkedin": "https://www.linkedin.com/in/ch%C3%AD-trung-nguy%E1%BB%85n-tr%E1%BA%A7n-546592312/",

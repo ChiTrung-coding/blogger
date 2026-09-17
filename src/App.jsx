@@ -3,6 +3,7 @@ import { HashRouter, Routes, Route, Outlet } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
+import ContactWidget from './components/layout/ContactWidget';
 import ProtectedAdminRoute from './components/auth/ProtectedAdminRoute';
 
 // Lazy load all page components for code splitting
@@ -36,6 +37,7 @@ function Layout() {
         </Suspense>
       </main>
       <Footer />
+      <ContactWidget />
     </div>
   );
 }
