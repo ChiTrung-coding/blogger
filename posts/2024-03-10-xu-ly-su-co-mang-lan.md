@@ -1,7 +1,7 @@
 ---
 title: "Hướng dẫn xử lý sự cố mạng LAN trong doanh nghiệp"
 slug: "xu-ly-su-co-mang-lan"
-date: "2024-03-10"
+date: "2026-03-10"
 category: "IT Support"
 tags: ["Networking", "IT Support", "LAN", "Troubleshooting"]
 excerpt: "Quy trình chẩn đoán và xử lý các sự cố mạng LAN phổ biến trong môi trường doanh nghiệp."
