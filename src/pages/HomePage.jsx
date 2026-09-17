@@ -50,13 +50,15 @@ export default function HomePage() {
       <section className="bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 border-b border-slate-200 dark:border-slate-700 py-12 px-4">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center gap-8">
           {/* Avatar */}
-          <div className="flex-shrink-0">
+          <div className="relative flex h-28 w-28 flex-shrink-0 items-center justify-center overflow-hidden rounded-full border-4 border-blue-500 bg-blue-100 text-2xl font-bold text-blue-700 shadow-lg sm:h-36 sm:w-36">
             <img
               src={resolveAssetUrl(owner.avatar)}
               alt={owner.name}
               loading="lazy"
-              className="w-28 h-28 sm:w-36 sm:h-36 rounded-full object-cover border-4 border-blue-500 shadow-lg"
+              onError={(event) => event.currentTarget.remove()}
+              className="h-full w-full rounded-full object-cover"
             />
+            <span className="absolute" aria-hidden="true">{owner.name?.split(' ').slice(-2).map((part) => part[0]).join('')}</span>
           </div>
 
           {/* Info */}

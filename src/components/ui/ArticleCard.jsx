@@ -51,6 +51,7 @@ export default function ArticleCard({ post }) {
             src={resolveAssetUrl(post.thumbnail)}
             alt={post.title}
             loading="lazy"
+            onError={(event) => event.currentTarget.remove()}
             className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
