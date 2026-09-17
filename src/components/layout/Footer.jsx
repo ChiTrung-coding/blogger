@@ -1,4 +1,4 @@
-import { GitBranch, Briefcase, Share2, MessageCircle } from 'lucide-react';
+import { GitBranch, Share2, MessageCircle } from 'lucide-react';
 import { useConfig } from '../../hooks/useConfig';
 
 /**
@@ -18,9 +18,9 @@ export default function Footer() {
       icon: GitBranch,
     },
     {
-      label: 'LinkedIn',
-      href: owner.social?.linkedin,
-      icon: Briefcase,
+      label: 'Zalo',
+      href: owner.social?.zalo ? `https://zalo.me/${String(owner.social.zalo).replace(/\D/g, '')}` : '',
+      icon: MessageCircle,
     },
     {
       label: 'Facebook',
