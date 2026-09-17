@@ -1,7 +1,7 @@
 ---
 title: "Bắt đầu với React Hooks: useState, useEffect và useCallback"
 slug: "bat-dau-voi-react-hooks"
-date: "2024-01-15"
+date: "2026-01-15"
 category: "Web Development"
 tags: ["React", "JavaScript", "Hooks", "Frontend"]
 excerpt: "Tìm hiểu các React Hooks cơ bản và cách sử dụng chúng hiệu quả trong dự án thực tế."
