@@ -5,7 +5,7 @@ date: "2024-03-10"
 category: "IT Support"
 tags: ["Networking", "IT Support", "LAN", "Troubleshooting"]
 excerpt: "Quy trình chẩn đoán và xử lý các sự cố mạng LAN phổ biến trong môi trường doanh nghiệp."
-thumbnail: "/images/posts/network-troubleshoot.jpg"
+thumbnail: "/images/IT1.jpg"
 published: true
 ---
 
