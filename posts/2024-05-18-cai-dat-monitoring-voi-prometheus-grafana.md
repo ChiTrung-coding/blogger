@@ -5,7 +5,7 @@ date: "2024-05-18"
 category: "IT Support"
 tags: ["Prometheus", "Grafana", "Monitoring", "Docker", "DevOps"]
 excerpt: "Hướng dẫn cài đặt và cấu hình hệ thống giám sát server với Prometheus, Grafana và Node Exporter."
-thumbnail: "/images/IT2.jpg"
+thumbnail: "/images/It2.jpg"
 published: true
 ---
 
