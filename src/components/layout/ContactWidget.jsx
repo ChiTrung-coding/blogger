@@ -2,11 +2,19 @@ import { useState } from 'react';
 import { MessageCircle, Phone, X } from 'lucide-react';
 import { useConfig } from '../../hooks/useConfig';
 
+function getZaloUrl(value) {
+  const input = String(value || '').trim();
+  if (!input) return '';
+  if (/^https?:\/\//i.test(input)) return input;
+  const phone = input.replace(/\D/g, '');
+  return phone ? `https://zalo.me/${phone}` : '';
+}
+
 export default function ContactWidget() {
   const { owner } = useConfig();
   const contact = owner.contact || {};
   const links = [
-    contact.zalo && { label: 'Zalo', href: contact.zalo, icon: 'Z', className: 'bg-blue-600 hover:bg-blue-700' },
+    getZaloUrl(contact.zalo) && { label: 'Zalo', href: getZaloUrl(contact.zalo), icon: 'Z', className: 'bg-blue-600 hover:bg-blue-700' },
     contact.messenger && { label: 'Messenger', href: contact.messenger, icon: <MessageCircle size={20} />, className: 'bg-sky-500 hover:bg-sky-600' },
     contact.phone && { label: contact.phone, href: `tel:${contact.phone.replace(/\s+/g, '')}`, icon: <Phone size={20} />, className: 'bg-emerald-600 hover:bg-emerald-700' },
   ].filter(Boolean);
