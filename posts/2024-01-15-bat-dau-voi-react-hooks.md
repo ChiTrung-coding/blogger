@@ -5,7 +5,7 @@ date: "2024-01-15"
 category: "Web Development"
 tags: ["React", "JavaScript", "Hooks", "Frontend"]
 excerpt: "Tìm hiểu các React Hooks cơ bản và cách sử dụng chúng hiệu quả trong dự án thực tế."
-thumbnail: "/images/posts/react-hooks.jpg"
+thumbnail: "/images/meo1.jpg"
 published: true
 ---
 
