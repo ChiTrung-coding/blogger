@@ -1,7 +1,7 @@
 ---
 title: "Laravel Eloquent Relationships: Hướng dẫn thực tế từ A đến Z"
 slug: "laravel-eloquent-relationships"
-date: "2024-04-05"
+date: "2026-04-05"
 category: "Web Development"
 tags: ["Laravel", "PHP", "Eloquent", "Database", "ORM"]
 excerpt: "Nắm vững tất cả các loại quan hệ trong Eloquent ORM của Laravel với các ví dụ thực tế."
