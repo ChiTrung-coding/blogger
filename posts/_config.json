@@ -65,6 +65,25 @@
       "Khả năng học hỏi và thích nghi với công nghệ mới"
     ]
   },
+  "about": {
+    "birthDate": "24/06/2004",
+    "focus": "IT Support / Software Development",
+    "direction": "Kết hợp giữa phát triển phần mềm và hỗ trợ kỹ thuật, hướng đến việc tạo ra các giải pháp công nghệ hiệu quả, ổn định và phù hợp với nhu cầu thực tế.",
+    "tools": {
+      "Ngôn ngữ lập trình": ["PHP", "Python", "JavaScript", "Node.js"],
+      "Framework / Library": ["Laravel", "React", "Vue", "Bootstrap"],
+      "Cơ sở dữ liệu": ["MySQL", "SQL Server", "MongoDB"],
+      "Hệ điều hành": ["Windows", "Linux"],
+      "Công cụ khác": ["Git", "Docker", "VS Code", "Figma"]
+    },
+    "goals": [
+      "Nâng cao kỹ năng lập trình (PHP, Laravel, React, ...)",
+      "Tìm hiểu sâu về hệ thống, mạng và bảo mật",
+      "Phát triển kỹ năng mềm và tiếng Anh",
+      "Hướng đến các dự án thực tế và cơ hội việc làm tốt hơn"
+    ],
+    "quote": "Mỗi ngày học thêm một điều mới, là một bước tiến gần hơn đến mục tiêu của mình."
+  },
   "categories": [
     {
       "name": "Web Development",
