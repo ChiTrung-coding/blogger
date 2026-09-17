@@ -55,10 +55,11 @@ export default function HomePage() {
               src={resolveAssetUrl(owner.avatar)}
               alt={owner.name}
               loading="lazy"
-              onError={(event) => event.currentTarget.remove()}
+              onError={(event) => { event.currentTarget.remove(); event.currentTarget.nextElementSibling?.classList.remove('hidden'); }}
               className="h-full w-full rounded-full object-cover"
             />
-            <span className="absolute" aria-hidden="true">{owner.name?.split(' ').slice(-2).map((part) => part[0]).join('')}</span>
+              <span className="absolute hidden" aria-hidden="true">{owner.name?.split(' ').slice(-2).map((part) => part[0]).join('')}</span>
+
           </div>
 
           {/* Info */}
