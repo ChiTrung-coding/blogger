@@ -23,7 +23,7 @@ export default function ContactWidget() {
   if (links.length === 0) return null;
 
   return (
-    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
+    <div className="fixed bottom-4 right-3 z-50 flex max-w-[calc(100vw-1.5rem)] flex-col items-end gap-3 sm:bottom-5 sm:right-5">
       {isOpen && (
         <div className="flex flex-col items-end gap-2" aria-label="Contact options">
           {links.map((link) => (

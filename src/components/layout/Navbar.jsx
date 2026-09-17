@@ -64,12 +64,12 @@ export default function Navbar() {
   return (
     <>
       <nav className="sticky top-0 z-50 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl px-3 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <NavLink
               to="/"
-              className="flex-shrink-0 font-bold text-lg text-slate-900 dark:text-white hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200"
+              className="min-w-0 max-w-[calc(100vw-10rem)] truncate font-bold text-lg text-slate-900 dark:text-white hover:text-blue-500 dark:hover:text-blue-400 transition-colors duration-200"
               onClick={() => setMenuOpen(false)}
             >
               <span className="text-blue-500">&lt;/&gt;</span>{' '}
