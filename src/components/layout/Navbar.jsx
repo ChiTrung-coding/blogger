@@ -105,15 +105,6 @@ export default function Navbar() {
               <ThemeToggle />
 
               <NavLink
-                to="/editor"
-                aria-label="Chỉnh sửa blog"
-                title="Chỉnh sửa blog"
-                className="hidden rounded-md p-2 text-slate-600 transition-colors hover:bg-slate-100 hover:text-blue-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-blue-400 sm:block"
-              >
-                <Pencil size={19} />
-              </NavLink>
-
-              <NavLink
                 to="/admin"
                 aria-label="Quản lý blog"
                 title="Quản lý blog"
