@@ -316,7 +316,7 @@ export default function AdminPage() {
       education: aboutForm.education.filter((item) => item.organization.trim() || item.role.trim()).map((item) => ({ ...item, organization: item.organization.trim(), role: item.role.trim(), period: item.period.trim(), description: item.description.trim() })),
     };
     saveConfigOverrides({ ...overrides, about });
-    setAboutForm((current) => ({ ...current, about, education: about.education }));
+    setAboutForm((current) => ({ ...current, education: about.education }));
     notify('Đã lưu nội dung trang Giới thiệu.');
   }
 
