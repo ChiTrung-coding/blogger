@@ -46,6 +46,7 @@ function Input({ label, value, onChange, textarea = false, type = 'text', option
 }
 
   function ImagePicker({ label, value, onChange }) {
+    const [mode, setMode] = useState(value && !value.startsWith('data:image/') ? 'url' : 'file');
     const [saveMessage, setSaveMessage] = useState('');
 
     function handleFile(event) {
@@ -63,7 +64,7 @@ function Input({ label, value, onChange, textarea = false, type = 'text', option
       reader.readAsDataURL(file);
     }
 
-    return <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">{label}<p className="mt-1 text-xs font-normal text-slate-500">Ảnh chỉ được ghi vào <code>public/images</code> sau khi bấm nút lưu.</p><div className="mt-1 flex flex-wrap items-center gap-3"><input type="file" accept="image/png,image/jpeg,image/webp,image/gif" onChange={handleFile} className="block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-normal text-slate-700 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300" />{value && <><img src={resolveAssetUrl(value)} alt="Xem trước" className="h-20 w-28 rounded-lg border border-slate-200 object-cover dark:border-slate-600" /><button type="button" onClick={() => onChange('')} className="text-sm text-red-600 hover:underline">Xóa ảnh</button></>}{saveMessage && <p className="basis-full text-xs font-normal text-amber-600 dark:text-amber-400">{saveMessage}</p>}</div></label>;
+    return <div className="block text-sm font-medium text-slate-700 dark:text-slate-300"><span>{label}</span><div className="mt-1 flex gap-2"><button type="button" onClick={() => setMode('url')} className={`rounded-lg px-3 py-1.5 text-xs font-medium ${mode === 'url' ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300'}`}>Dán link URL</button><button type="button" onClick={() => setMode('file')} className={`rounded-lg px-3 py-1.5 text-xs font-medium ${mode === 'file' ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300'}`}>Tải từ máy</button></div><div className="mt-2 flex flex-wrap items-center gap-3">{mode === 'url' ? <input type="url" value={value?.startsWith('data:image/') ? '' : (value || '')} onChange={(event) => onChange(event.target.value)} placeholder="https://example.com/image.jpg" className="block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-normal text-slate-700 outline-none focus:border-blue-500 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300" /> : <><input type="file" accept="image/png,image/jpeg,image/webp,image/gif" onChange={handleFile} className="block w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-normal text-slate-700 dark:border-slate-600 dark:bg-slate-900 dark:text-slate-300" /><p className="basis-full text-xs font-normal text-slate-500">Ảnh từ máy sẽ được lưu khi bạn bấm nút lưu.</p></>}{value && <><img src={resolveAssetUrl(value)} alt="Xem trước" className="h-20 w-28 rounded-lg border border-slate-200 object-cover dark:border-slate-600" /><button type="button" onClick={() => onChange('')} className="text-sm text-red-600 hover:underline">Xóa ảnh</button></>}{saveMessage && <p className="basis-full text-xs font-normal text-amber-600 dark:text-amber-400">{saveMessage}</p>}</div></div>;
   }
 
 function Panel({ title, children, onClose }) {
